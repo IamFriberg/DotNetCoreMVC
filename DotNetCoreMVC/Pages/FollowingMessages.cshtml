@@ -1,0 +1,28 @@
+﻿@page
+@model FollowingMessagesModel
+@{
+}
+
+<div class="container">
+    <div class="starter-template">
+        <h1>Messages i follow</h1>
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Message</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody th:each="message : ${messages}">
+                    <tr>
+                        <td th:text="${message.userName}">Username: testUser</td>
+                        <td th:text="${message.message}">Message</td>
+                        <td th:text="${message.timeStamp}">Time</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿@page
+@model MessagesModel
+@{
+}
+
+<div class="container">
+    <div class="starter-template">
+        <h1>My messages</h1>
+        
+        <form id="messageForm">
+            <div class="form-group">
+                <label for="message">Add a message</label>
+                <textarea class="form-control" id="message" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Message</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody th:each="message : ${messages}">
+                    <tr>
+                        <td th:text="${message.userName}">Username: testUser</td>
+                        <td th:text="${message.message}">Message</td>
+                        <td th:text="${message.timeStamp}">Time</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
