@@ -16,7 +16,7 @@ namespace DotNetCoreMVC.Pages
         private readonly IUsers _users;
 
         [BindProperty]
-        public IEnumerable<FollowUser> Users { get; set; }
+        public IEnumerable<FollowUserStatus> Users { get; set; }
         //public IEnumerable<FollowUser> Users;
 
         public UsersModel(ILogger<UsersModel> logger, IUsers users)
@@ -26,8 +26,22 @@ namespace DotNetCoreMVC.Pages
         }
         public IActionResult OnGet()
         {
-            Users = _users.Get();
+            _logger.LogInformation(User.Identity.Name);
+            Users = _users.Get(User.Identity.Name);
             return Page();
         }
+
+        public void OnPost(string userName)
+        {
+            _logger.LogInformation("OnPost");
+            _users.FollowUser(User.Identity.Name, userName);
+        }
+
+        public void OnDelete(string userName)
+        {
+            _logger.LogInformation("OnDelete");
+            _users.UnfollowUser(User.Identity.Name, userName);
+        }
+
     }
 }

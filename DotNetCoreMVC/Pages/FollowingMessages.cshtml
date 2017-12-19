@@ -15,12 +15,15 @@
                         <th>Time</th>
                     </tr>
                 </thead>
-                <tbody th:each="message : ${messages}">
-                    <tr>
-                        <td th:text="${message.userName}">Username: testUser</td>
-                        <td th:text="${message.message}">Message</td>
-                        <td th:text="${message.timeStamp}">Time</td>
-                    </tr>
+                <tbody>
+                    @foreach (var message in Model.Messages)
+                    {
+                        <tr>
+                            <td>Username: @message.UserName</td>
+                            <td>@message.Text</td>
+                            <td>@message.TimeStamp</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>

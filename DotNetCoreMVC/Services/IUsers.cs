@@ -8,6 +8,8 @@ namespace DotNetCoreMVC.Services
 {
     public interface IUsers
     {
-        IEnumerable<FollowUser> Get();
+        IEnumerable<FollowUserStatus> Get(string username);
+        bool FollowUser(string username, string usernameToFollow);
+        bool UnfollowUser(string username, string usernameToFollow);
     }
 }
