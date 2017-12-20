@@ -29,6 +29,7 @@ namespace DotNetCoreMVC
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //Register a specific context for handling everything that is not related to login/logout/register etc.
             services.AddDbContext<UsersDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

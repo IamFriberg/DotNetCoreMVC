@@ -26,7 +26,7 @@ namespace DotNetCoreMVC.Pages
 
         public IActionResult OnGet()
         {
-            Messages = _messages.GetFollowingMessages();
+            Messages = _messages.GetFollowingMessages(User.Identity.Name);
             return Page();
         }
     }

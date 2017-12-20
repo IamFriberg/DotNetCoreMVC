@@ -10,12 +10,12 @@
     });
 
     function ajaxPost() {
-
+        var token = document.getElementsByName("__RequestVerificationToken")[0].value;
         // DO POST
         $.ajax({
             type: "POST",
             url: url,
-            data: { message: $("#message").val() },
+            data: { message: $("#message").val(), __RequestVerificationToken: token },
             success: function (result) {
                 //$("#postResultDiv").html("<strong>" + "Post Successfully!</strong>");
                 //TODO fix better handling

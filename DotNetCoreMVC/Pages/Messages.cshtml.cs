@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DotNetCoreMVC.Models;
 using DotNetCoreMVC.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,8 +21,15 @@ namespace DotNetCoreMVC.Pages
         }
         public IActionResult OnGet()
         {
-            Messages = _messages.GetMyOwnMessages();
+            Messages = _messages.GetMyOwnMessages(User.Identity.Name);
             return Page();
+        }
+
+        public void OnPost(string message)
+        {
+            //TODO Error handling, validation?
+            Message myMessage = new Message { UserName = User.Identity.Name, Text = message, TimeStamp = DateTime.Now };
+            _messages.SaveMessage(myMessage);
         }
     }
 }

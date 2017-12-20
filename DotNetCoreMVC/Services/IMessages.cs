@@ -8,7 +8,8 @@ namespace DotNetCoreMVC.Services
 {
     public interface IMessages
     {
-        IEnumerable<Message> GetMyOwnMessages();
-        IEnumerable<Message> GetFollowingMessages();
+        IEnumerable<Message> GetMyOwnMessages(string username);
+        IEnumerable<Message> GetFollowingMessages(string username);
+        bool SaveMessage(Message message);
     }
 }

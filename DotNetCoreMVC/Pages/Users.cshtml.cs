@@ -27,19 +27,19 @@ namespace DotNetCoreMVC.Pages
         public IActionResult OnGet()
         {
             _logger.LogInformation(User.Identity.Name);
-            Users = _users.Get(User.Identity.Name);
+            Users = _users.GetFollowUser(User.Identity.Name);
             return Page();
         }
 
         public void OnPost(string userName)
         {
-            _logger.LogInformation("OnPost");
+            //TODO Error handling, validation?
             _users.FollowUser(User.Identity.Name, userName);
         }
 
         public void OnDelete(string userName)
         {
-            _logger.LogInformation("OnDelete");
+            //TODO Error handling, validation?
             _users.UnfollowUser(User.Identity.Name, userName);
         }
 

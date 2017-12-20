@@ -10,20 +10,20 @@ namespace DotNetCoreMVC.Services
     {
         private UsersDbContext _usersDbContext;
         private ApplicationDbContext _applicationDbContext;
-        //private ApplicationUser _applicationUser;
         private ILogger<Users> _logger;
 
         public Users(UsersDbContext usersDbContext, 
             ApplicationDbContext applicationDbContext,
-        //    ApplicationUser applicationUser,
             ILogger<Users> logger)
         {
             _usersDbContext = usersDbContext;
             _applicationDbContext = applicationDbContext;
-         //   _applicationUser = applicationUser;
             _logger = logger;
         }
 
+        /**
+        * Lets a user follow another user
+        **/
         public bool FollowUser(string username, string usernameToFollow)
         {
             //TODO add error handling
@@ -37,36 +37,35 @@ namespace DotNetCoreMVC.Services
             return true;
         }
 
-        public IEnumerable<FollowUserStatus> Get(string username)
+        /**
+        * Get all the users and status if the user is following them or not
+        **/
+        public IEnumerable<FollowUserStatus> GetFollowUser(string username)
         {
             //Fetch all users from database
             IEnumerable<FollowUser> usersFromDb =_usersDbContext.Users
                 .Where(user => user.User == username);
 
-            foreach (var item in usersFromDb)
-            {
-                _logger.LogInformation(item.UserToFollow);
-            }
-
-            //Loop through and see if we are following that user
+            //Loop through all users and see if we are following that user
             List<FollowUserStatus> list = new List<FollowUserStatus>();
             foreach (var user in _applicationDbContext.Users.Where(user => user.UserName != username))
             {
-                _logger.LogInformation(user.UserName);
-                //_logger.LogInformation(usersFromDb.FirstOrDefault(u => u.UserToFollow == user.UserName).UserToFollow);
-                
+                //TODO optimize this with a join instead
                 list.Add(
                     new FollowUserStatus
                     {
                         User = username,
                         UserToFollow = user.UserName,
-                        Following = usersFromDb.FirstOrDefault(u => u.UserToFollow == user.UserName) != null //TODO fix
+                        Following = usersFromDb.FirstOrDefault(u => u.UserToFollow == user.UserName) != null
                     }
                 );
             }
             return list;
         }
 
+        /**
+        * Lets a user unfollow another user
+        **/
         public bool UnfollowUser(string username, string usernameToFollow)
         {
             //TODO add error handling
