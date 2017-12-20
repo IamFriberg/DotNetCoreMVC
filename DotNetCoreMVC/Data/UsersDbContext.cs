@@ -9,14 +9,19 @@ namespace DotNetCoreMVC.Data
 {
     public class UsersDbContext : DbContext
     {
+        public UsersDbContext() : base()
+        {
+
+        }
+
         public UsersDbContext(DbContextOptions dbContextOptions)
             : base(dbContextOptions)
         {
 
         }
 
-        public DbSet<FollowUser> Users { get; set; }
+        public virtual DbSet<FollowUser> Users { get; set; }
 
-        public DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
     }
 }
