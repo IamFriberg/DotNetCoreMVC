@@ -1,0 +1,42 @@
+﻿@page
+@model UsersModel
+@{
+}
+
+<!--Is there not a better way to do this?-->
+@Html.AntiForgeryToken()
+
+<div class="container">
+    <div class="starter-template">
+        <h1>Users</h1>
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Following</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.UserToFollow</td>
+                            <td>
+                                @if (user.Following)
+                                {
+                                    <button value="@user.UserToFollow" type="button" class="btn btn-danger">Unfollow</button>
+                                }
+                                else
+                                {
+                                    <button value="@user.UserToFollow" type="button" class="btn btn-success">Follow</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

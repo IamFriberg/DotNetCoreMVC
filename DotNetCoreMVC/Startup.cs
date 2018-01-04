@@ -29,9 +29,15 @@ namespace DotNetCoreMVC
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //Register a specific context for handling everything that is not related to login/logout/register etc.
+            services.AddDbContext<UsersDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+
 
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
@@ -39,6 +45,11 @@ namespace DotNetCoreMVC
                     options.Conventions.AuthorizeFolder("/Account/Manage");
                     options.Conventions.AuthorizePage("/Account/Logout");
                 });
+
+            //Register the service to fetch data for each subscriptions
+            services.AddScoped<IUsers, Users>();
+            //Register the service to fetch data for each subscriptions
+            services.AddScoped<IMessages, Messages>();
 
             // Register no-op EmailSender used by account confirmation and password reset during development
             // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
