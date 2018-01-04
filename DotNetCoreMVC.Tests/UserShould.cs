@@ -41,6 +41,62 @@ namespace DotNetCoreMVC.Tests
         }
 
         [Fact]
+        public void GetFollowUser()
+        {
+
+            //Create a "result set" of users to follow
+            var followingUserData = new List<FollowUser>
+            {
+                new FollowUser {Id = 1, User = "user 1", UserToFollow = "user 2"},
+                new FollowUser {Id = 2, User = "user 1", UserToFollow = "user 3"}
+            }.AsQueryable();
+
+            //Using empty constructor for mocking purpose
+            //Service that handles the following, messages etc.
+            var usersDbContextMock = new Mock<UsersDbContext>();
+
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "DotNetCoreMVC")
+                .Options;
+            //Service that handles the following, messages etc.
+            var applicationDbContext = new ApplicationDbContext(options);
+
+            //Create a "result set" of all users
+            applicationDbContext.Users.Add(new ApplicationUser { UserName = "user 1" });
+            applicationDbContext.Users.Add(new ApplicationUser { UserName = "user 2" });
+            applicationDbContext.Users.Add(new ApplicationUser { UserName = "user 3" });
+            applicationDbContext.Users.Add(new ApplicationUser { UserName = "user 4" });
+            applicationDbContext.SaveChanges();
+
+            //Mock the DbSet to interact with
+            //Follow User 
+            var mockSetOfFollowingUsers = new Mock<DbSet<FollowUser>>();
+
+            //Mock all methods we are using
+            //Follow User 
+            mockSetOfFollowingUsers.As<IQueryable<FollowUser>>().Setup(m => m.Provider).Returns(followingUserData.Provider);
+            mockSetOfFollowingUsers.As<IQueryable<FollowUser>>().Setup(m => m.Expression).Returns(followingUserData.Expression);
+
+            //Specify when to return it
+            usersDbContextMock.Setup(m => m.Users).Returns(mockSetOfFollowingUsers.Object);
+
+            //Mock the logger
+            var logger = new Mock<ILogger<Users>>();
+            Users users = new Users(
+                usersDbContextMock.Object,
+                applicationDbContext,
+                logger.Object);
+
+            IEnumerable<FollowUserStatus> list = users.GetFollowUser("user 1");
+
+            //Assert that it was successful
+            Assert.Equal(3, list.Count());
+
+            //Verify that we have added the user
+            usersDbContextMock.Verify(m => m.Users, Times.Once());
+        }
+
+        [Fact]
         public void UnFollowUser()
         {
 
