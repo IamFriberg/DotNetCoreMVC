@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetCoreMVC.Data;
 using DotNetCoreMVC.Services;
+using DotNetCoreMVC.Middleware;
 
 namespace DotNetCoreMVC
 {
@@ -70,7 +66,10 @@ namespace DotNetCoreMVC
                 app.UseExceptionHandler("/Error");
             }
 
+            //Use static files
             app.UseStaticFiles();
+            //We also want to use node modules
+            app.UseNodeModules(env.ContentRootPath);
 
             app.UseAuthentication();
 
